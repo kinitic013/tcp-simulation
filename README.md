@@ -173,5 +173,3 @@ You will see four packets (or sometimes three, if a FIN and ACK are combined) at
       * Sent by the client (`localhost.CLIENT_PORT > localhost.8080`).
       * `Flags [.]`: An ACK packet.
       * `ack (server_FIN_seq_num + 1)`: Acknowledges the server's FIN. After sending this, the client enters a `TIME_WAIT` state for a brief period to ensure all packets are delivered and then closes the connection.
-
-By observing this output, you can visually trace the lifecycle of a TCP connection as implemented by your simple C++ programs.
