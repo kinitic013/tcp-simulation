@@ -28,7 +28,7 @@ int main() {
 
     // Set address
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;  // Accept from any interface
+    address.sin_addr.s_addr = INADDR_ANY; 
     address.sin_port = htons(PORT);
 
     // Bind
@@ -45,7 +45,6 @@ int main() {
 
     std::cout << "Server listening on port " << PORT << std::endl;
 
-    // Accept loop
     while (true) {
         new_socket = accept(server_fd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
         if (new_socket < 0) {
@@ -54,23 +53,24 @@ int main() {
         }
 
         std::cout << "Client connected" << std::endl;
+        while (true) {
+            ssize_t valread = read(new_socket, buffer, sizeof(buffer) - 1);
+            if (valread <= 0)
+                break;
 
-        ssize_t valread = read(new_socket, buffer, sizeof(buffer));
-        if (valread > 0) {
+            buffer[valread] = '\0';
             std::cout << "Message from client: " << buffer << std::endl;
 
-            send(new_socket, "Hello from server", 17, 0);
-            std::cout << "Reply sent\n";
-
-            memset(buffer, 0, sizeof(buffer));  // Clear buffer
-
-            send(new_socket, "Another message from server", 27, 0);
-        } else {
-            std::cout << "Read failed or client disconnected early\n";
+            const char* reply = "Hello from server";
+            send(new_socket, reply, strlen(reply), 0);
+            memset(buffer, 0, sizeof(buffer));
         }
 
-        close(new_socket);  // Important: Close client socket after response
+
+        std::cout << "Client disconnected\n";
+        close(new_socket);
     }
+
 
     close(server_fd);
     return 0;

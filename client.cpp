@@ -25,13 +25,22 @@ int main() {
         std::cout << "Connection failed\n";
         return -1;
     }
+    {   
+        send(sock, "Hello from client", 18, 0);
+        read(sock, buffer, 1024);
+        std::cout << "Server says: " << buffer << std::endl;
+    }
+    {
+        send(sock, "Abhishek this side!!", 20, 0);
+        read(sock, buffer, 1024);
+        std::cout << "Server says: " << buffer << std::endl;
+    }
+    {
+        send(sock, "Just Checking on Server", 23, 0);
+        read(sock, buffer, 1024);
+        std::cout << "Server says: " << buffer << std::endl;
+    }
 
-    send(sock, "Hello from client", 18, 0);
-    read(sock, buffer, 1024);
-    std::cout << "Server says: " << buffer << std::endl;
-    buffer[1024] = {0}; // Ensure null-termination
-    read(sock, buffer, 1024);
-    std::cout << "Server says: " << buffer << std::endl;
     close(sock);
     return 0;
 }
