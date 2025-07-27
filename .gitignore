@@ -1,0 +1,6 @@
+# Compiled C/C++ executables
+/server
+/client
+
+# vscode debugger files
+/.vscode
